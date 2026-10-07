@@ -32,3 +32,7 @@ This repository contains community-maintained LangChain integrations in the [`la
 
 - [Contributing Guide](https://docs.langchain.com/oss/python/contributing/overview): Learn how to contribute to LangChain projects and find good first issues.
 - [Code of Conduct](https://github.com/langchain-ai/langchain-community/blob/master/.github/CODE_OF_CONDUCT.md): Our community guidelines and standards for participation.
+
+## Search endpoint configuration
+
+Support any Serper.dev-compatible endpoint (like litescrape.com, serpbase.dev, serpensapi.org, and others). Pass `serper_base_url` to `GoogleSerperAPIWrapper`, or set `SERPER_BASE_URL`. Configure the provider key with `serper_api_key` or `SERPER_API_KEY`. The default endpoint is unchanged for synchronous and asynchronous requests.

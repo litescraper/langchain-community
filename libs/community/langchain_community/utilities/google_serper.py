@@ -40,6 +40,7 @@ class GoogleSerperAPIWrapper(BaseModel):
 
     tbs: Optional[str] = None
     serper_api_key: Optional[str] = None
+    serper_base_url: str = "https://google.serper.dev"
     aiosession: Optional[aiohttp.ClientSession] = None
 
     model_config = ConfigDict(
@@ -54,6 +55,12 @@ class GoogleSerperAPIWrapper(BaseModel):
             values, "serper_api_key", "SERPER_API_KEY"
         )
         values["serper_api_key"] = serper_api_key
+        values["serper_base_url"] = get_from_dict_or_env(
+            values,
+            "serper_base_url",
+            "SERPER_BASE_URL",
+            default="https://google.serper.dev",
+        )
 
         return values
 
@@ -159,7 +166,9 @@ class GoogleSerperAPIWrapper(BaseModel):
             **{key: value for key, value in kwargs.items() if value is not None},
         }
         response = requests.post(
-            f"https://google.serper.dev/{search_type}", headers=headers, params=params
+            f"{self.serper_base_url.rstrip('/')}/{search_type}",
+            headers=headers,
+            params=params,
         )
         response.raise_for_status()
         search_results = response.json()
@@ -172,7 +181,7 @@ class GoogleSerperAPIWrapper(BaseModel):
             "X-API-KEY": self.serper_api_key or "",
             "Content-Type": "application/json",
         }
-        url = f"https://google.serper.dev/{search_type}"
+        url = f"{self.serper_base_url.rstrip('/')}/{search_type}"
         params = {
             "q": search_term,
             **{key: value for key, value in kwargs.items() if value is not None},
